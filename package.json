@@ -2,7 +2,7 @@
   "name": "custom-pmp",
   "version": "1.0.0",
   "main": "index.js",
-  "type":"module",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -19,6 +19,9 @@
   "homepage": "https://github.com/RadamantiumX/custom-pmp#readme",
   "description": "",
   "dependencies": {
-    "@inquirer/core": "^10.3.2"
+    "@bartheleway/inquirer-table-multiple": "^1.0.3",
+    "@inquirer/core": "^10.3.2",
+    "@inquirer/prompts": "^7.10.1",
+    "ansi-colors": "^4.1.3"
   }
 }
