@@ -14,7 +14,7 @@ async function main() {
   try {
     let rows = []
     // 2. Ask a question and wait for the response
-    const pkg = (await rl.question(ansiColors.bgGreen('Enter the packages names: '))).split(" ").map((item)=>{
+    const pkg = (await rl.question(ansiColors.bold.underline.bgGreen('Enter the packages names: \n\n'))).split(" ").map((item)=>{
        rows.push({
         value: item.toLowerCase(),
         title: item.toUpperCase()
