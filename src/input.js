@@ -22,8 +22,8 @@ async function main() {
     });
     
     
-    
-    const  workspaceConfig = await tableMultiple({
+    const answers = {
+    workspaceSelect:  await tableMultiple({
     message: "Select your configuration",
     multiple: true,
     required: true,
@@ -47,8 +47,8 @@ async function main() {
          }
      ],
      rows:rows
-   })
-   const pkgMng = await select({
+      }),
+      pkgManager:await select({
       message: "Select your package manager",
       choices: [
          {
@@ -67,14 +67,71 @@ async function main() {
             name: "YARN"
          }
       ]
-    })
-   const confirmation = await confirm({message: "Accept the terms...?"})
-   workspaceConfig.map((item)=>{
-      sentence.push(`${pkgMng} i ${item.choice.value} --filter=${item.answers.filter(i => typeof i !== 'boolean').join("-")} ${item.answers.includes(true) ? "-D" : ""}`)
-   })
+    }),
+      confirmActions: await confirm({message: "Accept the terms...?"})
+    }
+   //  const  workspaceConfig = await tableMultiple({
+   //  message: "Select your configuration",
+   //  multiple: true,
+   //  required: true,
+    
+   //  columns: [
+   //      {
+   //          title: "Api",
+   //          value: "api",
+   //       },
+   //       {
+   //          title: "Client",
+   //          value: "client"
+   //       },
+   //       {
+   //          title: "Root",
+   //          value: "root"
+   //       },
+   //       {
+   //          title: ansiColors.bgCyan(ansiColors.white("Dev-Dependency")),
+   //          value: true
+   //       }
+   //   ],
+   //   rows:rows
+   // })
+   // const pkgMng = await select({
+   //    message: "Select your package manager",
+   //    choices: [
+   //       {
+   //          value:"npm",
+   //          description:"Most popular",
+   //          name: "NPM"
+   //       },
+   //       {
+   //          value:"pnpm",
+   //          description:"Fast and professional",
+   //          name: "PNPM"
+   //       },
+   //       {
+   //          value:"yarn",
+   //          description:"Another more",
+   //          name: "YARN"
+   //       }
+   //    ]
+   //  })
+   // const confirmation = await confirm({message: "Accept the terms...?"})
+   // workspaceConfig.map((item)=>{
+   //    sentence.push(`${pkgMng} i ${item.choice.value} --filter=${item.answers.filter(i => typeof i !== 'boolean').join("-")} ${item.answers.includes(true) ? "-D" : ""}`)
+   // })
    // console.log(workspaceConfig)
    // console.log(pkgMng)
-   console.log(sentence.join(" & "))
+   // console.log(sentence.join(" & "))
+   // console.log(answers)
+   // console.log(answers.workspaceSelect)
+   answers.workspaceSelect.map((item)=>{
+      sentence.push({
+         packageManager: answers.pkgManager,
+         workspaces: item.answers.filter(i => typeof i !== 'boolean'),
+         devDep: item.answers.includes(true) ? true : false
+      })
+   })
+   console.log(sentence)
    return
   } catch (err) {
     console.error('An error occurred:', err);
@@ -87,3 +144,26 @@ async function main() {
 main();
 
 // Can be works
+
+// Return example: 
+/*
+{
+  workspaceSelect: [
+    { choice: [Object], answers: [Array] },
+    { choice: [Object], answers: [Array] },
+    { choice: [Object], answers: [Array] }
+  ],
+  pkgManager: 'npm',
+  confirmActions: true
+}
+
+Choices & answers return example:
+
+[
+  { choice: { value: 'react', title: 'REACT' }, answers: [ 'api' ] },
+  { choice: { value: 'node', title: 'NODE' }, answers: [ 'api' ] },
+  { choice: { value: 'nodemon', title: 'NODEMON' }, answers: [ 'api', true ] },
+  { choice: { value: 'tsup', title: 'TSUP' }, answers: [ true ] }
+]
+
+ */

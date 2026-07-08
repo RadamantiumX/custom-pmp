@@ -3,6 +3,8 @@ import { createPrompt,
     useState,
   useKeypress,
   isEnterKey,
+  isUpKey,
+  isDownKey,
   usePrefix,
   isSpaceKey } from "@inquirer/core";
 
@@ -18,7 +20,12 @@ import { createPrompt,
           setValue(answer ? 'yes' : 'no');
           setStatus('done');
           done(answer);
-        } else {
+        }else if(isUpKey(key)){
+            setValue('yes')
+        }else if(isDownKey(key)){
+            setValue('no')
+        }else {
+
           setValue(rl.line);
         }
       });
@@ -29,7 +36,7 @@ import { createPrompt,
         formattedValue = styleText(/^y(i)?/i.test(value) ? 'cyan' : 'red', value);
       } else {
      
-        defaultValue = styleText('italic', config.default === false ? ' (y/N)' : ' (Y/n)');
+        defaultValue = styleText('italic', config.default === false ? ' (y/N) or ⮁ ' : ' (Y/n) or ⮁ ');
       }
 
       const message = styleText('bold', config.message);
@@ -41,4 +48,4 @@ import { createPrompt,
    
   );
 
-  // const confirmation = confirm({message: "Accept the terms"})
+// const confirmation = confirm({message: "Accept the terms?"})
