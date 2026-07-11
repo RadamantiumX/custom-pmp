@@ -11,6 +11,7 @@ async function main() {
   // 1. Create the interface
   const rl = readline.createInterface({ input, output });
   let sentence = []
+  let joinSentence = []
   try {
     let rows = []
     // 2. Ask a question and wait for the response
@@ -27,7 +28,6 @@ async function main() {
     message: "Select your configuration",
     multiple: true,
     required: true,
-    
     columns: [
         {
             title: "Api",
@@ -66,10 +66,24 @@ async function main() {
             description:"Another more",
             name: "YARN"
          }
-      ]
-    }),
-      confirmActions: await confirm({message: "Accept the terms...?"})
+      ],
+      
+    })
     }
+    /**
+     * [
+  { choice: { value: 'react', title: 'REACT' }, answers: [ 'api' ] },
+  { choice: { value: 'node', title: 'NODE' }, answers: [ 'api' ] },
+  { choice: { value: 'nodemon', title: 'NODEMON' }, answers: [ 'api', true ] },
+  { choice: { value: 'tsup', title: 'TSUP' }, answers: [ true ] }
+]
+
+     */
+    const confirmActions = await confirm({message: `Selected configuration:
+      - package manager: ${answers.pkgManager}
+      - packages [workspace]: ${answers.workspaceSelect.map((item)=>(`${item.choice.value} ${item.answers.includes(true) ? "(Dev)" : ""}[${item.answers.filter(i => typeof i !== 'boolean').join(" - ")}]`))}
+      \n ¿Continue with the process?`})
+    if(!confirmActions) return
    //  const  workspaceConfig = await tableMultiple({
    //  message: "Select your configuration",
    //  multiple: true,
@@ -127,11 +141,28 @@ async function main() {
    answers.workspaceSelect.map((item)=>{
       sentence.push({
          packageManager: answers.pkgManager,
-         workspaces: item.answers.filter(i => typeof i !== 'boolean'),
+         package: item.choice.value,
+         workspaces: item.answers.filter(i => typeof i !== 'boolean').join("-"),
          devDep: item.answers.includes(true) ? true : false
       })
    })
-   console.log(sentence)
+   sentence.map((item)=>{
+      switch(item.packageManager){
+         case 'npm':
+            joinSentence.push(`${item.packageManager} i ${item.package} ${item.devDep ? "-D": ""}`)
+            break;
+         case 'pnpm':
+            joinSentence.push(`${item.packageManager} i ${item.package} ${item.devDep ? "-D": ""}`)
+            break;
+         case 'yarn':
+            joinSentence.push(`${item.packageManager} i ${item.package} ${item.devDep ? "-D": ""}`)
+            break;     
+      }
+   })
+
+
+
+   console.log(joinSentence.join(" && "))
    return
   } catch (err) {
     console.error('An error occurred:', err);
