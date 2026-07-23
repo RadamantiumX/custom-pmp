@@ -37,15 +37,26 @@ export async function tableQuiz(){
       }
      ]
       })
-
-      return
+      console.log(workspaceSelect)
+      return workspaceSelect
 
     }catch(error){
        console.log(error)
     }
 }
+/**
+ * Example Return:
+ [
+  { choice: { title: 'REACT', value: 'react' }, answers: [ 'client' ] },
+  {
+    choice: { title: 'NODE', value: 'node' },
+    answers: [ 'api', true ]
+  }
+]
+ * 
+ */
+tableQuiz()
 
-// tableQuiz()
 
 export async function selectQuiz() {
    try{
@@ -76,16 +87,18 @@ export async function selectQuiz() {
    }
 }
 
+
+
 export async function confirmQuiz(){
    try{
      const confirmChoices = await confirm({
       message: 'Confirm Process?'
      })
-     return
+     return confirmChoices
    }catch(error){
       console.log(error)
    }
 }
 
 
-confirmQuiz()
+// confirmQuiz()

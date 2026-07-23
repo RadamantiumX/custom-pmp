@@ -16,6 +16,8 @@ import { tableQuiz, selectQuiz, confirmQuiz } from './inquirer/index.js';
    answers: ["api"]
 }]
 
+const mockingTableReturn = [ { choice: { title: 'REACT', value: 'react' }, answers: [ 'api' ] } ]
+
 vi.mock('@bartheleway/inquirer-table-multiple', () => ({
   // const actual = await importOriginal<typeof import('@bartheleway/inquirer-table-multiple')>();
   // return { ...actual, default: wrapPrompt(actual.default) };
@@ -34,13 +36,14 @@ describe('table inquirer', ()=>{
 
       const result = await tableQuiz()
 
-      expect(result).toBeUndefined()
+      expect(result).toBeDefined()
   })
 
 })
 
 
 describe('select inquirer', ()=>{
+   
    it('must works select', async ()=>{
     const result = selectQuiz()
     expect(screen.getScreen()).toContain('Select your package manager')
@@ -51,15 +54,23 @@ describe('select inquirer', ()=>{
 
 })
 
-// describe('confirm inquirer', ()=>{
-//     it('must work confirm', async ()=>{
-//       const result = confirmQuiz()
-//       expect(screen.getScreen()).toContain('Confirm Process?')
-//       screen.keypress('return')
 
-//       await result
-//     })
-// })
+// vi.mock('./confirm.js', ()=>({
+//    confirm: vi.fn()
+// }))
+//  describe('confirm inquirer', ()=>{
+   
+//   beforeEach(()=>{
+//         vi.clearAllMocks()
+//       })
+//      it('must work confirm', async ()=>{
+//           vi.mocked(confirm).mockResolvedValue('y')
+
+//       const result = await confirmQuiz()
+
+//       expect(result).toBeUndefined()
+//      })
+//  })
 
 describe('custom confirm', ()=>{
    it('handle a custom confirm', async()=>{
