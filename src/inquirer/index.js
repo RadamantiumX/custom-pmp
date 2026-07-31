@@ -55,7 +55,7 @@ export async function tableQuiz(){
 ]
  * 
  */
-tableQuiz()
+
 
 
 export async function selectQuiz() {
@@ -81,7 +81,7 @@ export async function selectQuiz() {
       ],
       
     })
-  return
+  return selectChoices
    }catch(error){
       console.log(error)
    }

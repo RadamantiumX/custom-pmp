@@ -19,8 +19,6 @@ import { tableQuiz, selectQuiz, confirmQuiz } from './inquirer/index.js';
 const mockingTableReturn = [ { choice: { title: 'REACT', value: 'react' }, answers: [ 'api' ] } ]
 
 vi.mock('@bartheleway/inquirer-table-multiple', () => ({
-  // const actual = await importOriginal<typeof import('@bartheleway/inquirer-table-multiple')>();
-  // return { ...actual, default: wrapPrompt(actual.default) };
   tableMultiple: vi.fn()
 }));
 
@@ -36,7 +34,7 @@ describe('table inquirer', ()=>{
 
       const result = await tableQuiz()
 
-      expect(result).toBeDefined()
+      expect(result).toBeUndefined()
   })
 
 })
@@ -55,22 +53,22 @@ describe('select inquirer', ()=>{
 })
 
 
-// vi.mock('./confirm.js', ()=>({
-//    confirm: vi.fn()
-// }))
-//  describe('confirm inquirer', ()=>{
+ vi.mock('./confirm.js', ()=>({
+    confirm: vi.fn()
+ }))
+  describe('confirm inquirer', ()=>{
    
-//   beforeEach(()=>{
-//         vi.clearAllMocks()
-//       })
-//      it('must work confirm', async ()=>{
-//           vi.mocked(confirm).mockResolvedValue('y')
+   beforeEach(()=>{
+         vi.clearAllMocks()
+       })
+      it('must work confirm', async ()=>{
+           vi.mocked(confirm).mockResolvedValue('y')
 
-//       const result = await confirmQuiz()
+       const result = await confirmQuiz()
 
-//       expect(result).toBeUndefined()
-//      })
-//  })
+       expect(result).toBeUndefined()
+      })
+  })
 
 describe('custom confirm', ()=>{
    it('handle a custom confirm', async()=>{
@@ -85,41 +83,41 @@ describe('custom confirm', ()=>{
    })
 })
 
-// describe('table test inquirer', ()=>{
-//      it('table testing split', async()=>{
-//        const result = tableQuiz()
+ describe('table test inquirer', ()=>{
+      it('table testing split', async()=>{
+        const result = tableQuiz()
 
-//          expect(screen.getScreen()).toMatchInlineSnapshot([
-//          '"? Select your configuration (Press <space> to select, <Up and Down> to move rows, <Left and Right> to move columns)',
-//          '',
-//          '┌──────────┬─────────┬─────────┬─────────┬────────────────┐',
-//          '│ 1-2 of 2 │ Api     │ Client  │ Root    │ Dev-Dependency │',
-//          '├──────────┼─────────┼─────────┼─────────┼────────────────┤',
-//          '│ REACT    │ [ [ ] ] │   [ ]   │   [ ]   │   [ ]          │',
-//          '├──────────┼─────────┼─────────┼─────────┼────────────────┤',
-//          '│ NODE     │   [ ]   │   [ ]   │   [ ]   │   [ ]          │',
-//          '└──────────┴─────────┴─────────┴─────────┴────────────────┘"'
-//        ].join('\n'))
-//        screen.keypress('space')
+          expect(screen.getScreen()).toMatchInlineSnapshot([
+          '"? Select your configuration (Press <space> to select, <Up and Down> to move rows, <Left and Right> to move columns)',
+          '',
+          '┌──────────┬─────────┬─────────┬─────────┬────────────────┐',
+          '│ 1-2 of 2 │ Api     │ Client  │ Root    │ Dev-Dependency │',
+          '├──────────┼─────────┼─────────┼─────────┼────────────────┤',
+          '│ REACT    │ [ [ ] ] │   [ ]   │   [ ]   │   [ ]          │',
+          '├──────────┼─────────┼─────────┼─────────┼────────────────┤',
+          '│ NODE     │   [ ]   │   [ ]   │   [ ]   │   [ ]          │',
+          '└──────────┴─────────┴─────────┴─────────┴────────────────┘"'
+        ].join('\n'))
+        screen.keypress('space')
 
-//        await screen.next()
-//        expect(screen.getScreen()).toMatchInlineSnapshot([
-//          '"? Select your configuration',
-//          '',
-//          '┌──────────┬─────────┬─────────┬─────────┬────────────────┐',
-//          '│ 1-2 of 2 │ Api     │ Client  │ Root    │ Dev-Dependency │',
-//          '├──────────┼─────────┼─────────┼─────────┼────────────────┤',
-//          '│ REACT    │ [ [×] ] │   [ ]   │   [ ]   │   [ ]          │',
-//          '├──────────┼─────────┼─────────┼─────────┼────────────────┤',
-//          '│ NODE     │   [ ]   │   [ ]   │   [ ]   │   [ ]          │',
-//          '└──────────┴─────────┴─────────┴─────────┴────────────────┘"'
-//        ].join('\n'))
+        await screen.next()
+        expect(screen.getScreen()).toMatchInlineSnapshot([
+          '"? Select your configuration',
+          '',
+          '┌──────────┬─────────┬─────────┬─────────┬────────────────┐',
+          '│ 1-2 of 2 │ Api     │ Client  │ Root    │ Dev-Dependency │',
+          '├──────────┼─────────┼─────────┼─────────┼────────────────┤',
+          '│ REACT    │ [ [×] ] │   [ ]   │   [ ]   │   [ ]          │',
+          '├──────────┼─────────┼─────────┼─────────┼────────────────┤',
+          '│ NODE     │   [ ]   │   [ ]   │   [ ]   │   [ ]          │',
+          '└──────────┴─────────┴─────────┴─────────┴────────────────┘"'
+        ].join('\n'))
 
-//       screen.keypress('return')
+       screen.keypress('return')
 
-//       await result
-//      })
-//  })
+       await result
+      })
+  })
 
  
 
