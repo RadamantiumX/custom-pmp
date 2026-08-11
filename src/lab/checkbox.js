@@ -1,57 +1,38 @@
 import { checkbox, Separator } from "@inquirer/prompts"
-
-
-
-const pkgs = ["react", "node", "nodemon", "tsup", "volter", "input", "prompts"]
+const pkgs = ["react", "node", "nodemon"]
 const ws = [
   {
     name: "API",
-    value: ["api", "react", "node", "nodemon", "tsup", "volter", "input", "prompts"]
+    value: ["api"],
+    
   },
    {
     name: "CLIENT",
-    value: ["client","react", "node", "nodemon", "tsup", "volter", "input", "prompts"]
+    value: ["client"],
+    
   },
    {
     name: "ROOT",
-    value: ["root","react", "node", "nodemon", "tsup", "volter", "input", "prompts"]
+    value: ["root"],
+    
   },
 ]
 
-// TODO: Maybe this can works
-pkgs.map((p, key)=>{
-   ws.map((w)=>{
-      const sliced = w.value.slice(key + 1, key + 2)
-      sliced.unshift(w.value[0])
-      console.log(sliced)
-   })
-})
+  const combine = pkgs.reduce((acc, curr, index)=>{  
+     const mixed = ws.map((w)=>{
+       w = { name: w.name, value: [w.value, curr].flat()  }
+       return w
+      })
+       acc.push(new Separator(curr.toUpperCase()),...mixed)
+       return acc
+   },[]) 
 
 
-// async function check() {
-//    const choiceArr = []
-   
-//    pkgs.map((pkg, key)=>{
-//     let newWs = []
-//     newWs = [...ws]
-//     if(newWs.length !== 0){
-//        newWs.map((item)=>{item.value.push(pkgs[key])})
-//     }
-//     choiceArr.push(new Separator(pkg.toUpperCase()), ...newWs)
-   
-//    })
- 
-   
-//   const answers =  await checkbox({
-//    message: `Select a package manager: `,
-//    choices:choiceArr,
-//    loop: false
-// })
-
-// console.log(answers) 
-// return
-// }
+const question = await checkbox({
+  message: 'Select any choice',
+  choices: combine,
+  loop: false
+})   
 
 
-//   await check()
-
+console.log(question)
