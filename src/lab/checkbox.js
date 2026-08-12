@@ -29,13 +29,8 @@ const ws = [
         return acc
     },[]) 
 
-  
-  const question = await checkbox({
-    message: 'Select any choice',
-    choices: combine,
-    loop: false,
-    validate: async(answers)=>{
-      const outsider = []
+const isValidAmountOfChoices = async(answers) =>{
+   const outsider = []
        answers.map((a)=>{
           outsider.push(a.value[1])
        })
@@ -44,10 +39,16 @@ const ws = [
            return !testing
       })
       if(isNotExistOnValues){
-        return `You miss select choices on ${isNotExistOnValues} package`
+        return `You miss select choices on ${ansiColors.blueBright(isNotExistOnValues.toLocaleUpperCase())} package`
       }
       return true
-      },
+}
+  
+  const question = await checkbox({
+    message: 'Select any choice',
+    choices: combine,
+    loop: false,
+    validate:(answers) => isValidAmountOfChoices(answers),
     theme:{
       style:{
         renderSelectedChoices:(selectedChoices)=> { return 'Done' },
@@ -58,16 +59,3 @@ const ws = [
   })   
 
 
-//   console.log(outsider)
-// const arr = [ 'react', 'react', 'node', 'node']
-
-// const verify = pkgs.find((value, index, array)=>{
-//        const testing = arr.includes(value)
-//        return !testing
-//     })
-
-// if(verify){
-//   console.log(`This value [${verify}] doesn't existe on array`)
-// }else{
-//   console.log('All values are incorporated...')
-// }
