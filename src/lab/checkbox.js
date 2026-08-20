@@ -19,22 +19,27 @@ const ws = [
     
   },
 ]
-
-   const combine = pkgs.reduce((acc, curr, index)=>{  
-      const mixed = ws.map((w)=>{
+function mergedArrays(packageArray, wsArray){
+  const combine = packageArray.reduce((acc, curr, index)=>{  
+      const mixed = wsArray.map((w)=>{
         w = { name: w.name, value: [w.value, curr].flat()  }
         return w
        })
         acc.push(new Separator(ansiColors.bgCyan(curr.toUpperCase())),...mixed)
         return acc
-    },[]) 
+    },[])
 
-const isValidAmountOfChoices = async(answers) =>{
+    return combine
+}
+   
+
+const isValidAmountOfChoices = async(answers, arrayPkg) =>{
+  console.log(answers)
    const outsider = []
        answers.map((a)=>{
           outsider.push(a.value[1])
        })
-      const isNotExistOnValues = pkgs.find((value, index, array)=>{
+      const isNotExistOnValues = arrayPkg.find((value, index, array)=>{
            const testing = outsider.includes(value)
            return !testing
       })
@@ -43,19 +48,24 @@ const isValidAmountOfChoices = async(answers) =>{
       }
       return true
 }
-  
-  const question = await checkbox({
-    message: 'Select any choice',
-    choices: combine,
+
+const mixed = mergedArrays(pkgs, ws)
+
+  const checkConfig = {
+     message: 'Select any choice',
+    choices: mixed,
     loop: false,
-    validate:(answers) => isValidAmountOfChoices(answers),
+    validate:(answers) => isValidAmountOfChoices(answers, pkgs),
     theme:{
       style:{
-        renderSelectedChoices:(selectedChoices)=> { return 'Done' },
-        key: (text)=> {console.log(); return 'clear';}
+        renderSelectedChoices:()=> { return 'Done' },
+        
       },
     
     }
-  })   
+  }
+  
+  const question = await checkbox(checkConfig)   
 
 
+console.log(question)
