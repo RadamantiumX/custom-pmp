@@ -1,4 +1,7 @@
  const configurations = [
+  [ 'api', 'tsup' ],
+  [ 'client', 'tsup' ],
+  [ 'root', 'inquirer' ],
    [ 'api', 'react' ],
    [ 'client', 'react' ],
    [ 'root', 'react' ],
@@ -6,7 +9,7 @@
    [ 'client', 'node' ],
    [ 'api', 'nodemon' ]
  ]
-
+const inputPkgs = ['react', 'node', 'nodemon']
 // const grouping = responseArray.reduce((currentItem, accumulate)=>{
 //    const ws = currentItem[0]
 //    const pkg = currentItem[1]
@@ -28,6 +31,26 @@
 
 const grouped = Object.groupBy(configurations, (config) => config[1])
 
-const normalObj = {...grouped}
+ const normalObj = {...grouped}
+/**
+ * Output: 
+ * 
+  {
+  react: [ [ 'api', 'react' ], [ 'client', 'react' ], [ 'root', 'react' ] ],
+  node: [ [ 'api', 'node' ], [ 'client', 'node' ] ],
+  nodemon: [ [ 'api', 'nodemon' ] ]
+   }
+ */
 
+
+// console.log(normalObj)
+
+  for(const [pkg, ws] of Object.entries(normalObj)){
+     ws.map((w)=>{
+       w.pop()
+      
+    })
+  }
+  
 console.log(normalObj)
+
