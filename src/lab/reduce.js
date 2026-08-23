@@ -9,6 +9,7 @@
    [ 'client', 'node' ],
    [ 'api', 'nodemon' ]
  ]
+ const dev = []
 const devConfig = [ [ true, 'react' ], [ true, 'node' ], [ true, 'nodemon' ] ]
 
 const inputPkgs = ['react', 'node', 'nodemon']
@@ -31,7 +32,7 @@ const inputPkgs = ['react', 'node', 'nodemon']
 //   countedNames[name] = currCount + 1;
 // }
 
-const grouped = Object.groupBy(configurations, (config) => config[1])
+const grouped = Object.groupBy([...configurations,...dev], (config) => config[1])
 
  const normalObj = {...grouped}
 /**
@@ -47,21 +48,21 @@ const grouped = Object.groupBy(configurations, (config) => config[1])
 
 // console.log(normalObj)
 
-  for(const [pkg, ws] of Object.entries(normalObj)){
-     ws.map((w)=>{
-       w.pop()
+  for(const [pkg, value] of Object.entries(normalObj)){
+     value.map((val)=>{
+       val.pop()
       
     })
   }
   
 
-   for (const [pkg, ws] of Object.entries(normalObj)){
-      ws.map((w)=>{
-        console.log(w[0].toString())
-      })
-   }
+  //  for (const [pkg, ws] of Object.entries(normalObj)){
+  //     ws.map((w)=>{
+  //       console.log(w[0].toString())
+  //     })
+  //  }
 
-  // console.log(normalObj)
+  console.log(normalObj)
  /**
   * Example final:
   * 
