@@ -9,6 +9,8 @@
    [ 'client', 'node' ],
    [ 'api', 'nodemon' ]
  ]
+const devConfig = [ [ true, 'react' ], [ true, 'node' ], [ true, 'nodemon' ] ]
+
 const inputPkgs = ['react', 'node', 'nodemon']
 // const grouping = responseArray.reduce((currentItem, accumulate)=>{
 //    const ws = currentItem[0]
@@ -52,5 +54,22 @@ const grouped = Object.groupBy(configurations, (config) => config[1])
     })
   }
   
-console.log(normalObj)
 
+   for (const [pkg, ws] of Object.entries(normalObj)){
+      ws.map((w)=>{
+        console.log(w[0].toString())
+      })
+   }
+
+  // console.log(normalObj)
+ /**
+  * Example final:
+  * 
+{
+  tsup: [ [ 'api' ], [ 'client' ] ],
+  inquirer: [ [ 'root' ] ],
+  react: [ [ 'api' ], [ 'client' ], [ 'root' ] ],
+  node: [ [ 'api' ], [ 'client' ] ],
+  nodemon: [ [ 'api' ] ]
+}
+  */

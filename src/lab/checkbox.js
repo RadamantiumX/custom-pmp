@@ -19,6 +19,13 @@ const ws = [
     
   },
 ]
+
+const dev = [
+  {
+    name:"DEV",
+    value: [true]
+  }
+]
 function mergedArrays(packageArray, wsArray){
   const combine = packageArray.reduce((acc, curr, index)=>{  
       const mixed = wsArray.map((w)=>{
@@ -49,7 +56,7 @@ const isValidAmountOfChoices = async(answers, arrayPkg) =>{
       return true
 }
 
-const mixed = mergedArrays(pkgs, ws)
+const mixed = mergedArrays(pkgs, dev)
 
   const checkConfig = {
      message: 'Select any choice',
@@ -65,7 +72,45 @@ const mixed = mergedArrays(pkgs, ws)
     }
   }
   
-  const question = await checkbox(checkConfig)   
+// const question = await checkbox(checkConfig)   
+//   const anotherQuestion = await checkbox({
+//      message: 'Is dev?',
+//      choices: mixed,
+//      loop: false,
+//       theme:{
+//        style:{
+//          renderSelectedChoices:()=> { return 'Done' },
+        
+//        },
+    
+//      }
+//  })
+const anotherQuestion = await checkbox({
+  message: 'Its dev?',
+  choices: mixed, 
+  loop: false,
+  theme:{
+      style:{
+          renderSelectedChoices:()=> { return 'Done' },
+        
+        },
+    
+      }
+})
+ console.log(anotherQuestion)
 
+// console.log(question)
 
-console.log(question)
+/**
+ * example response (with workspace):
+ * [
+  [ 'api', 'react' ],
+  [ 'client', 'react' ],
+  [ 'api', 'node' ],
+  [ 'api', 'nodemon' ]
+]
+
+example response (with dev, only answer):
+[ [ true, 'nodemon' ] ]
+ */
+// TODO: merge the workspaces answers with the dev answers
