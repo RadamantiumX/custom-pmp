@@ -13,6 +13,7 @@
 const devConfig = [ [ true, 'react' ], [ true, 'node' ], [ true, 'nodemon' ] ]
 
 const inputPkgs = ['react', 'node', 'nodemon']
+const pkgManager = 'npm'
 // const grouping = responseArray.reduce((currentItem, accumulate)=>{
 //    const ws = currentItem[0]
 //    const pkg = currentItem[1]
@@ -32,9 +33,22 @@ const inputPkgs = ['react', 'node', 'nodemon']
 //   countedNames[name] = currCount + 1;
 // }
 
-const grouped = Object.groupBy([...configurations,...dev], (config) => config[1])
+const grouped = Object.groupBy([...configurations,...devConfig], (config) => config[1])
 
  const normalObj = {...grouped}
+
+//  const senetenceMaker = (pkgMng, groupedAnswers)=>{
+//   const fullStm = []
+//    for (const [pkg, value] of Object.entries(groupedAnswers)){
+//       value.map((val)=>{
+//         val.pop()
+//       })
+//       switch(pkgMng){
+//           case 'npm':
+//             fullStm.push(`${pkgMng} i `)
+//       }
+//    }
+//  }
 /**
  * Output: 
  * 
@@ -47,13 +61,17 @@ const grouped = Object.groupBy([...configurations,...dev], (config) => config[1]
 
 
 // console.log(normalObj)
-
-  for(const [pkg, value] of Object.entries(normalObj)){
-     value.map((val)=>{
-       val.pop()
+// TODO: this works
+    for(const [pkg, value] of Object.entries(normalObj)){
+       value.map((val)=>{
+         val.pop()
       
-    })
-  }
+      })
+     const flatedValue = value.flat()
+     const popedValue = flatedValue.includes(true) ? flatedValue.pop() : flatedValue
+     console.log(flatedValue)
+     
+   }
   
 
   //  for (const [pkg, ws] of Object.entries(normalObj)){
@@ -62,7 +80,7 @@ const grouped = Object.groupBy([...configurations,...dev], (config) => config[1]
   //     })
   //  }
 
-  console.log(normalObj)
+ // console.log(normalObj)
  /**
   * Example final:
   * 
@@ -72,5 +90,14 @@ const grouped = Object.groupBy([...configurations,...dev], (config) => config[1]
   react: [ [ 'api' ], [ 'client' ], [ 'root' ] ],
   node: [ [ 'api' ], [ 'client' ] ],
   nodemon: [ [ 'api' ] ]
+}
+
+Example with dev boolean:
+{
+  tsup: [ [ 'api' ], [ 'client' ] ],
+  inquirer: [ [ 'root' ] ],
+  react: [ [ 'api' ], [ 'client' ], [ 'root' ] ],
+  node: [ [ 'api' ], [ 'client' ] ],
+  nodemon: [ [ 'api' ], [ true ] ]
 }
   */
