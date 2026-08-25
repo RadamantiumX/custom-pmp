@@ -61,18 +61,20 @@ const grouped = Object.groupBy([...configurations,...devConfig], (config) => con
 
 
 // console.log(normalObj)
+let flatedValue = []
 // TODO: this works
+// TODO: maybe wil turn to object is the solution
     for(const [pkg, value] of Object.entries(normalObj)){
        value.map((val)=>{
          val.pop()
       
       })
-     const flatedValue = value.flat()
-     const popedValue = flatedValue.includes(true) ? flatedValue.pop() : flatedValue
-     console.log(flatedValue)
+     const transformed = value.flat()
+    transformed.includes(true) ? transformed.pop() : transformed
+    flatedValue.push(transformed)
      
    }
-  
+   console.log(flatedValue)
 
   //  for (const [pkg, ws] of Object.entries(normalObj)){
   //     ws.map((w)=>{
