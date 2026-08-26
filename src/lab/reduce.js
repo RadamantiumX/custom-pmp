@@ -14,41 +14,17 @@ const devConfig = [ [ true, 'react' ], [ true, 'node' ], [ true, 'nodemon' ] ]
 
 const inputPkgs = ['react', 'node', 'nodemon']
 const pkgManager = 'npm'
-// const grouping = responseArray.reduce((currentItem, accumulate)=>{
-//    const ws = currentItem[0]
-//    const pkg = currentItem[1]
 
-//    if(!accumulate[pkg]) accumulate[pkg] = []
-   
-//    accumulate[pkg].push(ws)
-//    return accumulate
-// }, {})
+const groupObj = (firstArray, secondArray) =>{
+  const grouped = Object.groupBy([...firstArray,...secondArray], (innerArr) => innerArr[1])
 
-// console.log(grouping)
+   const normalObj = {...grouped}
 
-// const names = ["Alice", "Bob", "Tiff", "Bruce", "Alice"];
-// const countedNames = Object.create(null);
-// for (const name of names) {
-//   const currCount = countedNames[name] ?? 0;
-//   countedNames[name] = currCount + 1;
-// }
+   return normalObj
+}
 
-const grouped = Object.groupBy([...configurations,...devConfig], (config) => config[1])
 
- const normalObj = {...grouped}
 
-//  const senetenceMaker = (pkgMng, groupedAnswers)=>{
-//   const fullStm = []
-//    for (const [pkg, value] of Object.entries(groupedAnswers)){
-//       value.map((val)=>{
-//         val.pop()
-//       })
-//       switch(pkgMng){
-//           case 'npm':
-//             fullStm.push(`${pkgMng} i `)
-//       }
-//    }
-//  }
 /**
  * Output: 
  * 
@@ -60,29 +36,31 @@ const grouped = Object.groupBy([...configurations,...devConfig], (config) => con
  */
 
 
-// console.log(normalObj)
-let flatedValue = []
-// TODO: this works
-// TODO: maybe wil turn to object is the solution
-    for(const [pkg, value] of Object.entries(normalObj)){
+const sentenceMaker = (rawConfigArr, rawDevArr, selPkgMng) =>{
+  const stm = []
+  const normalObj = groupObj(rawConfigArr, rawDevArr)
+
+  for(const [pkg, value] of Object.entries(normalObj)){
        value.map((val)=>{
          val.pop()
-      
+       
       })
-     const transformed = value.flat()
-    transformed.includes(true) ? transformed.pop() : transformed
-    flatedValue.push(transformed)
-     
+    // switch(selPkgMng){
+    //    case 'npm':
+    //       stm.push(`npm i ${pkg.toString()} --workspace=${}`)
+    // }  
+   // const otherValues = value.length > 1 ? value.slice(0, -1) : value  
+    const sliceValue = value.at(-1).includes(true) && value.length > 1 ? value.slice(0, -1).flat() : value.flat()
+    console.log(sliceValue)
+    
    }
-   console.log(flatedValue)
 
-  //  for (const [pkg, ws] of Object.entries(normalObj)){
-  //     ws.map((w)=>{
-  //       console.log(w[0].toString())
-  //     })
-  //  }
+   return
+}
 
- // console.log(normalObj)
+sentenceMaker(configurations, devConfig, pkgManager)
+    
+  
  /**
   * Example final:
   * 
