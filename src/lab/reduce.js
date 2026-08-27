@@ -45,16 +45,21 @@ const sentenceMaker = (rawConfigArr, rawDevArr, selPkgMng) =>{
          val.pop()
        
       })
-    // switch(selPkgMng){
-    //    case 'npm':
-    //       stm.push(`npm i ${pkg.toString()} --workspace=${}`)
-    // }  
-   // const otherValues = value.length > 1 ? value.slice(0, -1) : value  
-    const sliceValue = value.at(-1).includes(true) && value.length > 1 ? value.slice(0, -1).flat() : value.flat()
-    console.log(sliceValue)
-    
+    const wsValue = value.at(-1).includes(true) && value.length > 1 ? value.slice(0, -1).flat() : value.flat()
+    const devValue = value.at(-1).includes(true)
+     switch(selPkgMng){
+         case 'npm':
+            stm.push(`npm i ${pkg.toString()} --workspace=${wsValue.join("-")} ${devValue ? "--save-dev" : ""}`);
+            break;
+         case 'pnpm':
+            stm.push(`pnpm add ${devValue ? "-D" : ""} ${pkg.toString()} --filter=${wsValue.join("-")}`);
+            break;
+         case 'yarn':
+            stm.push(`yarn workspace ${wsValue.join("-")} add ${devValue ? "-D" : ""} ${pkg.toString()}`);
+            break;   
+      }  
    }
-
+   console.log(stm)
    return
 }
 
