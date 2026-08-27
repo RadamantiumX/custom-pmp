@@ -13,7 +13,7 @@
 const devConfig = [ [ true, 'react' ], [ true, 'node' ], [ true, 'nodemon' ] ]
 
 const inputPkgs = ['react', 'node', 'nodemon']
-const pkgManager = 'npm'
+const pkgManager = 'pnpm'
 
 const groupObj = (firstArray, secondArray) =>{
   const grouped = Object.groupBy([...firstArray,...secondArray], (innerArr) => innerArr[1])
@@ -49,13 +49,13 @@ const sentenceMaker = (rawConfigArr, rawDevArr, selPkgMng) =>{
     const devValue = value.at(-1).includes(true)
      switch(selPkgMng){
          case 'npm':
-            stm.push(`npm i ${pkg.toString()} --workspace=${wsValue.join("-")} ${devValue ? "--save-dev" : ""}`);
+            stm.push(`npm i ${pkg.toString()} --workspace=${wsValue.join("-")}${devValue ? " --save-dev" : ""}`);
             break;
          case 'pnpm':
-            stm.push(`pnpm add ${devValue ? "-D" : ""} ${pkg.toString()} --filter=${wsValue.join("-")}`);
+            stm.push(`pnpm add${devValue ? " -D" : ""} ${pkg.toString()} --filter=${wsValue.join("-")}`);
             break;
          case 'yarn':
-            stm.push(`yarn workspace ${wsValue.join("-")} add ${devValue ? "-D" : ""} ${pkg.toString()}`);
+            stm.push(`yarn workspace ${wsValue.join("-")} add${devValue ? " -D" : ""} ${pkg.toString()}`);
             break;   
       }  
    }
