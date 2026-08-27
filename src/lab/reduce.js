@@ -59,7 +59,7 @@ const sentenceMaker = (rawConfigArr, rawDevArr, selPkgMng) =>{
             break;   
       }  
    }
-   console.log(stm)
+   console.log(stm.join(" & "))
    return
 }
 
