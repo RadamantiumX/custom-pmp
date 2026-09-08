@@ -9,6 +9,8 @@
    [ 'client', 'node' ],
    [ 'api', 'nodemon' ]
  ]
+ const minConf = [ [ 'api', 'nodemon' ] ]
+ const minDev = [[ true, 'nodemon' ]]
  const dev = []
 const devConfig = [ [ true, 'react' ], [ true, 'node' ], [ true, 'nodemon' ] ]
 
@@ -36,7 +38,7 @@ const groupObj = (firstArray, secondArray) =>{
  */
 
 
-const sentenceMaker = (rawConfigArr, rawDevArr, selPkgMng) =>{
+export const sentenceMaker = async (rawConfigArr, rawDevArr, selPkgMng) =>{
   const stm = []
   const normalObj = groupObj(rawConfigArr, rawDevArr)
 
@@ -52,18 +54,18 @@ const sentenceMaker = (rawConfigArr, rawDevArr, selPkgMng) =>{
             stm.push(`npm i ${pkg.toString()} --workspace=${wsValue.join("-")}${devValue ? " --save-dev" : ""}`);
             break;
          case 'pnpm':
-            stm.push(`pnpm add${devValue ? " -D" : ""} ${pkg.toString()} --filter=${wsValue.join("-")}`);
+            stm.push(`pnpm add${devValue ? " -D" : ""} ${pkg.toString()} --filter ${wsValue.join("-")}`);
             break;
          case 'yarn':
             stm.push(`yarn workspace ${wsValue.join("-")} add${devValue ? " -D" : ""} ${pkg.toString()}`);
             break;   
       }  
    }
-   console.log(stm.join(" & "))
-   return
+  
+   return stm.join(' & ')
 }
 
-sentenceMaker(configurations, devConfig, pkgManager)
+// sentenceMaker(minConf, minDev, pkgManager)
     
   
  /**
