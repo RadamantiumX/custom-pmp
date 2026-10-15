@@ -1,7 +1,7 @@
 import { checkbox, Separator, select } from "@inquirer/prompts"
 import ansiColors from "ansi-colors"
 import { sentenceMaker } from "./reduce.js"
-const pkgs = ["nodemon"]
+const pkgs = ["nodemon", "react", "cors"]
 const ws = [
   {
     name: "API",
@@ -41,11 +41,12 @@ function mergedArrays(packageArray, wsArray){
    
 
 const isValidAmountOfChoices = async(answers, arrayPkg) =>{
-
+   console.log(answers.value)
    const outsider = []
        answers.map((a)=>{
-          outsider.push(a.value[1])
-       })
+           outsider.push(a.value[1])
+        })
+      
       const isNotExistOnValues = arrayPkg.find((value, index, array)=>{
            const testing = outsider.includes(value)
            return !testing
@@ -57,13 +58,13 @@ const isValidAmountOfChoices = async(answers, arrayPkg) =>{
 }
 
 const mixedWs = mergedArrays(pkgs, ws)
-const mixedDev = mergedArrays(pkgs, dev)
-  
+// const mixedDev = mergedArrays(pkgs, dev)
+
 const question = await checkbox({
      message: 'Select any choice',
     choices: mixedWs,
     loop: false,
-    validate:(answers) => isValidAmountOfChoices(answers, pkgs),
+    validate:(answers) => {isValidAmountOfChoices(answers, pkgs); console.log(answers)},
     theme:{
       style:{
         renderSelectedChoices:()=> { return 'Done' },
@@ -73,39 +74,39 @@ const question = await checkbox({
     }
   })   
  
- const anotherQuestion = await checkbox({
-   message: 'Its dev?',
-   choices: mixedDev, 
-   loop: false,
-   theme:{
-       style:{
-           renderSelectedChoices:()=> { return 'Done' },
+//  const anotherQuestion = await checkbox({
+//    message: 'Its dev?',
+//    choices: mixedDev, 
+//    loop: false,
+//    theme:{
+//        style:{
+//            renderSelectedChoices:()=> { return 'Done' },
         
-         },
+//          },
     
-       }
- })
+//        }
+//  })
 
- const pkgMng = await select({
-    message: "Select the package manager",
-    choices:[
-      {
-        name: "NPM",
-        value: "npm"
-      },
-       {
-        name: "PNPM",
-        value: "pnpm"
-      },
-       {
-        name: "YARN",
-        value: "yarn"
-      },
-    ]
- })
-const smtMaker = await sentenceMaker(question, anotherQuestion, pkgMng)
+//  const pkgMng = await select({
+//     message: "Select the package manager",
+//     choices:[
+//       {
+//         name: "NPM",
+//         value: "npm"
+//       },
+//        {
+//         name: "PNPM",
+//         value: "pnpm"
+//       },
+//        {
+//         name: "YARN",
+//         value: "yarn"
+//       },
+//     ]
+//  })
+// const smtMaker = await sentenceMaker(question, anotherQuestion, pkgMng)
 
-console.log(smtMaker)
+// console.log(smtMaker)
 /**
  * example response (with workspace):
  * [
