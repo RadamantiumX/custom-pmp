@@ -9,23 +9,39 @@
    [ 'client', 'node' ],
    [ 'api', 'nodemon' ]
  ]
- const minConf = [ [ 'api', 'nodemon' ] ]
- const minDev = [[ true, 'nodemon' ]]
+ const minConf = [ [ 'api', 'nodemon' ], ["client", "nodemon"], ["client", 'react'] ]
+ const minDev = [[ '--save-dev', 'nodemon' ],['--optional-dev', 'nodemon'], ['--save-prod', "react"]]
  const dev = []
 const devConfig = [ [ true, 'react' ], [ true, 'node' ], [ true, 'nodemon' ] ]
 
 const inputPkgs = ['react', 'node', 'nodemon']
 const pkgManager = 'pnpm'
 
+// TODO: can work this
 const groupObj = (firstArray, secondArray) =>{
-  const grouped = Object.groupBy([...firstArray,...secondArray], (innerArr) => innerArr[1])
 
-   const normalObj = {...grouped}
-
+  const groupedWs = Object.groupBy([...firstArray], (innerArr) => innerArr[1])
+  const groupedOps = Object.groupBy([...secondArray], (innerArr) => innerArr[1])
+   const normalObj = {ws:{...groupedWs}, options:{...groupedOps}}
+   for(const [keyOut, valueOut] of Object.entries(normalObj)){
+   // console.log(valueOut)
+      for(const [keyIn, valueIn] of Object.entries(valueOut)){
+         valueIn.map((item)=>{
+          item.pop()
+         })
+         
+      }
+      
+   }
    return normalObj
 }
 
+const grp = groupObj(minConf, minDev)
 
+for( const [key, value] of Object.entries(grp)){
+    console.log(key)
+    console.log(value)
+}
 
 /**
  * Output: 
@@ -41,7 +57,7 @@ const groupObj = (firstArray, secondArray) =>{
 export const sentenceMaker = async (rawConfigArr, rawDevArr, selPkgMng) =>{
   const stm = []
   const normalObj = groupObj(rawConfigArr, rawDevArr)
-
+  console.log(normalObj)
   for(const [pkg, value] of Object.entries(normalObj)){
        value.map((val)=>{
          val.pop()
@@ -65,9 +81,9 @@ export const sentenceMaker = async (rawConfigArr, rawDevArr, selPkgMng) =>{
    return stm.join(' & ')
 }
 
-// sentenceMaker(minConf, minDev, pkgManager)
-    
-  
+ // sentenceMaker(minConf, minDev, pkgManager)
+
+
  /**
   * Example final:
   * 
