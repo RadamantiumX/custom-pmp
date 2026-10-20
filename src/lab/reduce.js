@@ -9,7 +9,7 @@
    [ 'client', 'node' ],
    [ 'api', 'nodemon' ]
  ]
- const minConf = [ [ 'api', 'nodemon' ], ["client", "nodemon"], ["client", 'react'] ]
+ const minConf = [ [ 'api', 'nodemon' ], ["client", "nodemon"], ["client", 'react'], ["api", "cors"], ["client", "tsup"], ["api", "react"], ["docs", "inquirer"] ]
  const minDev = [[ '--save-dev', 'nodemon' ],['--optional-dev', 'nodemon'], ['--save-prod', "react"]]
  const dev = []
 const devConfig = [ [ true, 'react' ], [ true, 'node' ], [ true, 'nodemon' ] ]
@@ -18,40 +18,47 @@ const inputPkgs = ['react', 'node', 'nodemon']
 const pkgManager = 'pnpm'
 
 // TODO: can work this
+// TODO: use this in main project
 const groupObj = (firstArray, secondArray) =>{
-
+  const accArr = []
   const groupedWs = Object.groupBy([...firstArray], (innerArr) => innerArr[1])
   const groupedOps = Object.groupBy([...secondArray], (innerArr) => innerArr[1])
    const normalObj = {ws:{...groupedWs}, options:{...groupedOps}}
    for(const [keyOut, valueOut] of Object.entries(normalObj)){
    // console.log(valueOut)
       for(const [keyIn, valueIn] of Object.entries(valueOut)){
+         if(!accArr.includes(keyIn)){
+          accArr.push(keyIn)
+         }
          valueIn.map((item)=>{
+          
           item.pop()
          })
          
       }
       
    }
+   console.log(accArr)
    return normalObj
 }
 
 const grp = groupObj(minConf, minDev)
-
-for( const [key, value] of Object.entries(grp)){
-    console.log(key)
-    console.log(value)
-}
-
+// console.log(grp["ws"]["nodemon"])
+// console.log(grp)
 /**
  * Output: 
  * 
-  {
-  react: [ [ 'api', 'react' ], [ 'client', 'react' ], [ 'root', 'react' ] ],
-  node: [ [ 'api', 'node' ], [ 'client', 'node' ] ],
-  nodemon: [ [ 'api', 'nodemon' ] ]
-   }
+ {
+   ws: { nodemon: [ [Array], [Array] ], react: [ [Array] ] },
+   options: { nodemon: [ [Array], [Array] ], react: [ [Array] ] }
+ }
  */
+//  for( const [key, value] of Object.entries(grp)){
+//      console.log(key)
+//      console.log(value)
+//  }
+
+
 
 
 export const sentenceMaker = async (rawConfigArr, rawDevArr, selPkgMng) =>{
