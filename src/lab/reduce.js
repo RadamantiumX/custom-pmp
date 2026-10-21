@@ -38,11 +38,11 @@ const groupObj = (firstArray, secondArray) =>{
       }
       
    }
-   console.log(accArr)
-   return normalObj
+   
+   return { normalObj, accArr }
 }
 
-const grp = groupObj(minConf, minDev)
+// const {normalObj, accArr} = groupObj(minConf, minDev)
 // console.log(grp["ws"]["nodemon"])
 // console.log(grp)
 /**
@@ -53,42 +53,56 @@ const grp = groupObj(minConf, minDev)
    options: { nodemon: [ [Array], [Array] ], react: [ [Array] ] }
  }
  */
-//  for( const [key, value] of Object.entries(grp)){
-//      console.log(key)
-//      console.log(value)
-//  }
+  // for( const [key, value] of Object.entries(normalObj)){
+  //     console.log(key)
+  //     console.log(value)
+  // }
 
 
 
 
 export const sentenceMaker = async (rawConfigArr, rawDevArr, selPkgMng) =>{
   const stm = []
-  const normalObj = groupObj(rawConfigArr, rawDevArr)
-  console.log(normalObj)
-  for(const [pkg, value] of Object.entries(normalObj)){
-       value.map((val)=>{
-         val.pop()
+  const {normalObj, accArr} = groupObj(rawConfigArr, rawDevArr)
+  // console.log(normalObj)
+  // for(const [pkg, value] of Object.entries(normalObj)){
+  //      value.map((val)=>{
+  //        val.pop()
        
-      })
-    const wsValue = value.at(-1).includes(true) && value.length > 1 ? value.slice(0, -1).flat() : value.flat()
-    const devValue = value.at(-1).includes(true)
+  //     })
+  //   const wsValue = value.at(-1).includes(true) && value.length > 1 ? value.slice(0, -1).flat() : value.flat()
+  //   const devValue = value.at(-1).includes(true)
+  //    switch(selPkgMng){
+  //        case 'npm':
+  //           stm.push(`npm i ${pkg.toString()} --workspace=${wsValue.join("-")}${devValue ? " --save-dev" : ""}`);
+  //           break;
+  //        case 'pnpm':
+  //           stm.push(`pnpm add${devValue ? " -D" : ""} ${pkg.toString()} --filter ${wsValue.join("-")}`);
+  //           break;
+  //        case 'yarn':
+  //           stm.push(`yarn workspace ${wsValue.join("-")} add${devValue ? " -D" : ""} ${pkg.toString()}`);
+  //           break;   
+  //     }  
+  //  }
+
+   accArr.map((pkg)=>{
      switch(selPkgMng){
-         case 'npm':
-            stm.push(`npm i ${pkg.toString()} --workspace=${wsValue.join("-")}${devValue ? " --save-dev" : ""}`);
-            break;
-         case 'pnpm':
-            stm.push(`pnpm add${devValue ? " -D" : ""} ${pkg.toString()} --filter ${wsValue.join("-")}`);
-            break;
-         case 'yarn':
-            stm.push(`yarn workspace ${wsValue.join("-")} add${devValue ? " -D" : ""} ${pkg.toString()}`);
-            break;   
-      }  
-   }
-  
+       case 'npm':
+         stm.push(`npm i ${pkg.toString()} --workspace=${normalObj.ws[pkg].flat().join("-")}${normalObj.options[pkg] ? normalObj.options[pkg].flat().join(" ") : ""}`);
+         break;
+       case 'pnpm':
+         stm.push(`pnpm add${normalObj.options[pkg] ? normalObj.options[pkg].flat().join(" ") : ""} ${pkg.toString()} --filter ${normalObj.ws[pkg].flat().join("-")}`);
+         break;
+       case 'yarn':
+         stm.push(`yarn workspace ${normalObj.ws[pkg].flat().join("-")} add${normalObj.options[pkg] ? normalObj.options[pkg].flat().join(" ") : ""} ${pkg.toString()}`);
+         break;    
+     }
+   })
+   
    return stm.join(' & ')
 }
 
- // sentenceMaker(minConf, minDev, pkgManager)
+ console.log(sentenceMaker(minConf, minDev, 'yarn'))
 
 
  /**
