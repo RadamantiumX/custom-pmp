@@ -20,18 +20,29 @@ const pkgManager = 'pnpm'
 // TODO: can work this
 // TODO: use this in main project
 const groupObj = (firstArray, secondArray) =>{
+
+  // Array para PUSHEAR los pkgs
   const accArr = []
+
+  // Separamos los grupos, usamos el nombre del paquete ingresado como KEY
   const groupedWs = Object.groupBy([...firstArray], (innerArr) => innerArr[1])
   const groupedOps = Object.groupBy([...secondArray], (innerArr) => innerArr[1])
+
+   // Los juntamos en un unico objeto, los ponemos en dos KEYS que representan los WORKSPACE (ws) y las opciones FLAG (options)
    const normalObj = {ws:{...groupedWs}, options:{...groupedOps}}
+
+   // Iteramos el objeto ya ensamblado
    for(const [keyOut, valueOut] of Object.entries(normalObj)){
-   // console.log(valueOut)
+   
+      // Volvemos a iterar el objeto interno
       for(const [keyIn, valueIn] of Object.entries(valueOut)){
          if(!accArr.includes(keyIn)){
+
+          // Empujamos los pkgs al array
           accArr.push(keyIn)
          }
          valueIn.map((item)=>{
-          
+          // Quitamos el valor del pkgs dentro cada valor
           item.pop()
          })
          
@@ -63,28 +74,11 @@ const groupObj = (firstArray, secondArray) =>{
 
 export const sentenceMaker = async (rawConfigArr, rawDevArr, selPkgMng) =>{
   const stm = []
-  const {normalObj, accArr} = groupObj(rawConfigArr, rawDevArr)
-  // console.log(normalObj)
-  // for(const [pkg, value] of Object.entries(normalObj)){
-  //      value.map((val)=>{
-  //        val.pop()
-       
-  //     })
-  //   const wsValue = value.at(-1).includes(true) && value.length > 1 ? value.slice(0, -1).flat() : value.flat()
-  //   const devValue = value.at(-1).includes(true)
-  //    switch(selPkgMng){
-  //        case 'npm':
-  //           stm.push(`npm i ${pkg.toString()} --workspace=${wsValue.join("-")}${devValue ? " --save-dev" : ""}`);
-  //           break;
-  //        case 'pnpm':
-  //           stm.push(`pnpm add${devValue ? " -D" : ""} ${pkg.toString()} --filter ${wsValue.join("-")}`);
-  //           break;
-  //        case 'yarn':
-  //           stm.push(`yarn workspace ${wsValue.join("-")} add${devValue ? " -D" : ""} ${pkg.toString()}`);
-  //           break;   
-  //     }  
-  //  }
 
+
+  const {normalObj, accArr} = groupObj(rawConfigArr, rawDevArr)
+ 
+  // Esta vez solo mapeamos el array de pkgs
    accArr.map((pkg)=>{
      switch(selPkgMng){
        case 'npm':
